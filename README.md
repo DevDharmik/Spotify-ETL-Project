@@ -1,15 +1,17 @@
-Description:
-This project is a Spotify ETL pipeline that extracts, transforms, and loads track data into a PostgreSQL database. It demonstrates key data engineering concepts such as data cleaning, transformation, and database integration using Python.
+📊 Spotify ETL Pipeline
 
-Key Features:
+This project implements an ETL (Extract, Transform, Load) pipeline using Python that processes Spotify track data and loads it into a PostgreSQL database. It demonstrates core data engineering skills such as data cleaning, transformation, and database interaction.
 
-ETL Pipeline: Extract data from CSV or API, transform it for analysis, and load into PostgreSQL.
+🧠 Key Features
 
-Data Processing: Clean and structure Spotify track data for efficient storage.
+🔹 Extracts raw track data (CSV or other sources)
 
-Database Integration: Connects to PostgreSQL using SQLAlchemy.
+🔹 Transforms and cleans data using pandas
 
-Professional Project Structure: Organized for clarity and portfolio presentation.
+🔹 Loads structured data into PostgreSQL via SQLAlchemy
 
-Technologies Used:
-Python | pandas | SQLAlchemy | PostgreSQL
+🔹 Clear and professional project structure
+
+🛠 Technologies Used
+
+Python | pandas | PostgreSQL | SQLAlchemy

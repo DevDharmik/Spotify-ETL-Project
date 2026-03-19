@@ -678,7 +678,6 @@ fig8 = go.Figure(data=go.Parcoords(
     dimensions=[dict(label=c.replace("_"," ").title(),
                      values=filtered[c]) for c in par_cols],
     labelcolor=T["text"],
-    labelangle=15,
 ))
 fig8.update_layout(
     paper_bgcolor=T["bg"], font_color=T["text"], font_family="Inter",

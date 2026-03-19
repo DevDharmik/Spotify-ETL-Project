@@ -33,9 +33,9 @@ THEMES = {
         "accent2":   "#1ed760",
         "text":      "#ffffff",
         "muted":     "#888888",
-        "particle":  ["#1DB954","#1ed760","#17a349","#ffffff"],
+        "particle":  ["#1DB954", "#1ed760", "#17a349", "#ffffff"],
         "gradient":  "linear-gradient(135deg,#1DB954 0%,#1ed760 50%,#17a349 100%)",
-        "chart_seq": ["#0d4a1f","#1DB954","#1ed760"],
+        "chart_seq": ["#0d4a1f", "#1DB954", "#1ed760"],
         "chart_bg":  "#0d0d14",
     },
     "💜 Neon Purple": {
@@ -46,9 +46,9 @@ THEMES = {
         "accent2":   "#d98aff",
         "text":      "#ffffff",
         "muted":     "#9988aa",
-        "particle":  ["#bf5fff","#d98aff","#7700cc","#ffffff"],
+        "particle":  ["#bf5fff", "#d98aff", "#7700cc", "#ffffff"],
         "gradient":  "linear-gradient(135deg,#bf5fff 0%,#d98aff 50%,#7700cc 100%)",
-        "chart_seq": ["#1e0030","#bf5fff","#d98aff"],
+        "chart_seq": ["#1e0030", "#bf5fff", "#d98aff"],
         "chart_bg":  "#130018",
     },
     "🔵 Ocean Blue": {
@@ -59,9 +59,9 @@ THEMES = {
         "accent2":   "#48cae4",
         "text":      "#ffffff",
         "muted":     "#7799bb",
-        "particle":  ["#00b4d8","#48cae4","#0077b6","#ffffff"],
+        "particle":  ["#00b4d8", "#48cae4", "#0077b6", "#ffffff"],
         "gradient":  "linear-gradient(135deg,#00b4d8 0%,#48cae4 50%,#0077b6 100%)",
-        "chart_seq": ["#023e8a","#00b4d8","#48cae4"],
+        "chart_seq": ["#023e8a", "#00b4d8", "#48cae4"],
         "chart_bg":  "#071628",
     },
     "🔴 Crimson": {
@@ -72,9 +72,9 @@ THEMES = {
         "accent2":   "#ff6b8a",
         "text":      "#ffffff",
         "muted":     "#aa7788",
-        "particle":  ["#ff3860","#ff6b8a","#cc0033","#ffffff"],
+        "particle":  ["#ff3860", "#ff6b8a", "#cc0033", "#ffffff"],
         "gradient":  "linear-gradient(135deg,#ff3860 0%,#ff6b8a 50%,#cc0033 100%)",
-        "chart_seq": ["#4a0010","#ff3860","#ff6b8a"],
+        "chart_seq": ["#4a0010", "#ff3860", "#ff6b8a"],
         "chart_bg":  "#1a000a",
     },
     "☀️ Light Mode": {
@@ -85,24 +85,21 @@ THEMES = {
         "accent2":   "#17a349",
         "text":      "#111111",
         "muted":     "#666666",
-        "particle":  ["#1DB954","#17a349","#0f7a35","#333333"],
+        "particle":  ["#1DB954", "#17a349", "#0f7a35", "#333333"],
         "gradient":  "linear-gradient(135deg,#1DB954 0%,#17a349 100%)",
-        "chart_seq": ["#0f7a35","#1DB954","#1ed760"],
+        "chart_seq": ["#0f7a35", "#1DB954", "#1ed760"],
         "chart_bg":  "#f0f0f0",
     },
 }
 
 # ── Colour helper ─────────────────────────────────────────────────────────────
-# Plotly colorscales ONLY accept: named colours, 6-digit hex, or rgb()/rgba().
-# They do NOT accept 8-digit hex (e.g. "#1DB95499"). Use this everywhere a
-# semi-transparent accent colour is needed inside a Plotly colorscale.
 
 def hex_to_rgba(hex_color: str, alpha: float = 1.0) -> str:
     h = hex_color.lstrip("#")
     r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
     return f"rgba({r},{g},{b},{alpha})"
 
-# ── Sidebar Theme Picker ───────────────────────────────────────────────────────
+# ── Sidebar Theme Picker ──────────────────────────────────────────────────────
 
 with st.sidebar:
     st.markdown("""
@@ -119,7 +116,7 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("**🎛️ Filters**")
 
-# ── Inject Theme CSS + Particles ──────────────────────────────────────────────
+# ── Inject Theme CSS + Particles ─────────────────────────────────────────────
 
 particle_colors = str(T["particle"]).replace("'", '"')
 
@@ -209,9 +206,7 @@ st.markdown(f"""
     box-shadow: 0 8px 30px {T["accent"]}22;
     transform: translateY(-3px);
   }}
-  .pipeline-step:hover::before {{
-    width:120px; height:120px; bottom:-20px;
-  }}
+  .pipeline-step:hover::before {{ width:120px; height:120px; bottom:-20px; }}
   .pipeline-icon  {{ font-size:2rem; margin-bottom:8px; }}
   .pipeline-label {{ font-size:0.88rem; font-weight:700; color:{T["text"]}; letter-spacing:0.05em; }}
   .pipeline-desc  {{ font-size:0.74rem; color:{T["muted"]}; margin-top:5px; }}
@@ -227,8 +222,7 @@ st.markdown(f"""
   ::-webkit-scrollbar-thumb {{ background:{T["accent"]}; border-radius:3px; }}
 
   .chart-wrapper {{
-    border-radius:14px;
-    padding:2px;
+    border-radius:14px; padding:2px;
     background: linear-gradient(135deg, {T["accent"]}44, transparent, {T["accent2"]}33);
     margin-bottom:8px;
   }}
@@ -277,7 +271,6 @@ window.addEventListener('load', function() {{
 </script>
 """, unsafe_allow_html=True)
 
-
 # ── Load Data ─────────────────────────────────────────────────────────────────
 
 @st.cache_data
@@ -287,19 +280,19 @@ def load_data():
     df   = pd.read_csv(path)
 
     rename_map = {}
-    for c in ["track_name","name","song_name","title","track"]:
+    for c in ["track_name", "name", "song_name", "title", "track"]:
         if c in df.columns and "track_name" not in df.columns:
             rename_map[c] = "track_name"; break
-    for c in ["artists","artist_name","artist","performer"]:
+    for c in ["artists", "artist_name", "artist", "performer"]:
         if c in df.columns and "artist_name" not in df.columns:
             rename_map[c] = "artist_name"; break
-    for c in ["album_name","album"]:
+    for c in ["album_name", "album"]:
         if c in df.columns and "album" not in df.columns:
             rename_map[c] = "album"; break
-    for c in ["track_genre","genre","playlist_genre","genres"]:
+    for c in ["track_genre", "genre", "playlist_genre", "genres"]:
         if c in df.columns and "genre" not in df.columns:
             rename_map[c] = "genre"; break
-    for c in ["duration_ms","duration"]:
+    for c in ["duration_ms", "duration"]:
         if c in df.columns and "duration_ms" not in df.columns:
             rename_map[c] = "duration_ms"; break
     if rename_map:
@@ -312,22 +305,23 @@ def load_data():
     else:
         df["explicit"] = False
     if "release_year" not in df.columns:
-        for c in ["release_date","year"]:
+        for c in ["release_date", "year"]:
             if c in df.columns:
                 df["release_year"] = pd.to_datetime(df[c], errors="coerce").dt.year
                 break
         if "release_year" not in df.columns:
             df["release_year"] = 2020
 
-    for col in ["track_name","artist_name","album","genre"]:
-        if col not in df.columns: df[col] = "Unknown"
+    for col in ["track_name", "artist_name", "album", "genre"]:
+        if col not in df.columns:
+            df[col] = "Unknown"
     if "popularity"   not in df.columns: df["popularity"]   = 50
     if "duration_min" not in df.columns: df["duration_min"] = 3.5
-    for col in ["danceability","energy","valence","acousticness","speechiness"]:
+    for col in ["danceability", "energy", "valence", "acousticness", "speechiness"]:
         if col not in df.columns:
             df[col] = np.random.uniform(0.3, 0.9, len(df)).round(3)
 
-    df = df.dropna(subset=["track_name","artist_name"])
+    df = df.dropna(subset=["track_name", "artist_name"])
     df["release_year"] = df["release_year"].fillna(2020).astype(int)
     df["popularity"]   = pd.to_numeric(df["popularity"], errors="coerce").fillna(50).astype(int)
     return df
@@ -406,11 +400,11 @@ st.markdown(f"""
 
 c1, c2, c3, c4, c5 = st.columns(5)
 for col, icon, val, label, delta in [
-    (c1,"🎵", f"{len(filtered):,}",                    "Total Tracks",   f"of {len(df):,} loaded"),
-    (c2,"🎤", f"{filtered['artist_name'].nunique():,}", "Unique Artists",  "in dataset"),
-    (c3,"⭐", f"{filtered['popularity'].mean():.1f}",  "Avg Popularity",  "out of 100"),
-    (c4,"⏱️", f"{filtered['duration_min'].mean():.2f}","Avg Duration",    "minutes"),
-    (c5,"🔥", f"{filtered['explicit'].sum():,}",        "Explicit Tracks", f"{filtered['explicit'].mean()*100:.0f}% of total"),
+    (c1, "🎵", f"{len(filtered):,}",                    "Total Tracks",   f"of {len(df):,} loaded"),
+    (c2, "🎤", f"{filtered['artist_name'].nunique():,}", "Unique Artists",  "in dataset"),
+    (c3, "⭐", f"{filtered['popularity'].mean():.1f}",  "Avg Popularity",  "out of 100"),
+    (c4, "⏱️", f"{filtered['duration_min'].mean():.2f}", "Avg Duration",   "minutes"),
+    (c5, "🔥", f"{filtered['explicit'].sum():,}",        "Explicit Tracks", f"{filtered['explicit'].mean()*100:.0f}% of total"),
 ]:
     with col:
         st.markdown(f"""
@@ -429,12 +423,12 @@ st.markdown("<div style='margin-top:30px;'></div>", unsafe_allow_html=True)
 st.markdown("<p class='section-header'>⚡ ETL Pipeline Flow</p>", unsafe_allow_html=True)
 st.markdown("<p class='section-sub'>From raw CSV to structured database to live dashboard</p>", unsafe_allow_html=True)
 
-p1,a1,p2,a2,p3,a3,p4 = st.columns([2,0.3,2,0.3,2,0.3,2])
+p1, a1, p2, a2, p3, a3, p4 = st.columns([2, 0.3, 2, 0.3, 2, 0.3, 2])
 for col, icon, label, desc in [
-    (p1,"📥","EXTRACT",   "Raw CSV → pandas DataFrame"),
-    (p2,"🔧","TRANSFORM", "Clean · Deduplicate · Type-cast"),
-    (p3,"🗄️","LOAD",      "PostgreSQL via SQLAlchemy"),
-    (p4,"📊","VISUALISE", "Live Streamlit dashboard"),
+    (p1, "📥", "EXTRACT",   "Raw CSV → pandas DataFrame"),
+    (p2, "🔧", "TRANSFORM", "Clean · Deduplicate · Type-cast"),
+    (p3, "🗄️", "LOAD",      "PostgreSQL via SQLAlchemy"),
+    (p4, "📊", "VISUALISE", "Live Streamlit dashboard"),
 ]:
     with col:
         st.markdown(f"""
@@ -444,7 +438,7 @@ for col, icon, label, desc in [
           <div class='pipeline-desc'>{desc}</div>
         </div>
         """, unsafe_allow_html=True)
-for arr in [a1,a2,a3]:
+for arr in [a1, a2, a3]:
     with arr:
         st.markdown(
             f"<div style='text-align:center;font-size:1.5rem;color:{T['accent']};padding-top:18px;'>➜</div>",
@@ -463,12 +457,12 @@ with col1:
     fig1 = px.scatter_3d(
         sample, x="popularity", y="energy", z="danceability",
         color="genre", size="popularity", size_max=12, opacity=0.8,
-        hover_data=["track_name","artist_name"],
+        hover_data=["track_name", "artist_name"],
         color_discrete_sequence=px.colors.qualitative.Bold,
     )
     fig1.update_layout(
         paper_bgcolor=T["bg"], font_color=T["text"],
-        font_family="Inter", margin=dict(l=0,r=0,t=10,b=0), height=460,
+        font_family="Inter", margin=dict(l=0, r=0, t=10, b=0), height=460,
         scene=dict(
             bgcolor=T["chart_bg"],
             xaxis=dict(backgroundcolor=T["chart_bg"], gridcolor=T["surface2"],
@@ -486,7 +480,7 @@ with col2:
     st.markdown("<p class='section-header'>🎤 Top 10 Artists</p>", unsafe_allow_html=True)
     st.markdown("<p class='section-sub'>Most tracks in the loaded dataset</p>", unsafe_allow_html=True)
     top = filtered["artist_name"].value_counts().head(10).reset_index()
-    top.columns = ["artist","count"]
+    top.columns = ["artist", "count"]
     fig2 = px.bar(top, x="count", y="artist", orientation="h",
                   color="count", color_continuous_scale=T["chart_seq"])
     fig2.update_layout(**chart_layout(460))
@@ -507,7 +501,7 @@ d_bins = pd.cut(filtered["danceability"], bins=15, labels=False)
 pivot  = filtered.copy()
 pivot["e_bin"] = e_bins
 pivot["d_bin"] = d_bins
-surface_data = pivot.groupby(["e_bin","d_bin"])["popularity"].mean().unstack(fill_value=0)
+surface_data = pivot.groupby(["e_bin", "d_bin"])["popularity"].mean().unstack(fill_value=0)
 
 surf_colorscale = [
     [0.0, T["surface2"]],
@@ -575,11 +569,11 @@ with col5:
     st.markdown("<p class='section-header'>🎸 Tracks by Genre</p>", unsafe_allow_html=True)
     st.markdown("<p class='section-sub'>Genre distribution in pipeline output</p>", unsafe_allow_html=True)
     gc = filtered["genre"].value_counts().reset_index()
-    gc.columns = ["genre","count"]
+    gc.columns = ["genre", "count"]
     fig5 = px.pie(gc, names="genre", values="count",
                   color_discrete_sequence=px.colors.qualitative.Bold, hole=0.55)
     fig5.update_layout(paper_bgcolor=T["bg"], font_color=T["text"],
-                       font_family="Inter", margin=dict(l=0,r=0,t=10,b=0), height=320,
+                       font_family="Inter", margin=dict(l=0, r=0, t=10, b=0), height=320,
                        legend=dict(bgcolor="rgba(0,0,0,0)", font_color=T["muted"]))
     fig5.update_traces(textfont_color=T["text"],
                        hovertemplate="<b>%{label}</b><br>%{value} · %{percent}<extra></extra>")
@@ -588,12 +582,12 @@ with col5:
 with col6:
     st.markdown("<p class='section-header'>🕸️ Audio Features by Genre</p>", unsafe_allow_html=True)
     st.markdown("<p class='section-sub'>Danceability · Energy · Valence · Acousticness</p>", unsafe_allow_html=True)
-    feat_cols = [c for c in ["danceability","energy","valence","acousticness","speechiness"]
+    feat_cols = [c for c in ["danceability", "energy", "valence", "acousticness", "speechiness"]
                  if c in filtered.columns]
-    radar  = filtered.groupby("genre")[feat_cols].mean().reset_index()
-    cats   = [c.capitalize() for c in feat_cols]
+    radar   = filtered.groupby("genre")[feat_cols].mean().reset_index()
+    cats    = [c.capitalize() for c in feat_cols]
     palette = px.colors.qualitative.Bold
-    fig6   = go.Figure()
+    fig6    = go.Figure()
     for i, row in radar.iterrows():
         v = [row[c] for c in feat_cols]
         raw_color = palette[i % len(palette)]
@@ -602,7 +596,7 @@ with col6:
         else:
             fill_color = hex_to_rgba(T["accent"], 0.06)
         fig6.add_trace(go.Scatterpolar(
-            r=v+[v[0]], theta=cats+[cats[0]],
+            r=v + [v[0]], theta=cats + [cats[0]],
             fill="toself", name=row["genre"],
             line_color=raw_color, fillcolor=fill_color,
             line_width=1.8, opacity=0.9,
@@ -610,11 +604,11 @@ with col6:
     fig6.update_layout(
         polar=dict(
             bgcolor=T["chart_bg"],
-            radialaxis=dict(visible=True, range=[0,1], color=T["muted"], gridcolor=T["surface2"]),
+            radialaxis=dict(visible=True, range=[0, 1], color=T["muted"], gridcolor=T["surface2"]),
             angularaxis=dict(color=T["text"], gridcolor=T["surface2"]),
         ),
         paper_bgcolor=T["bg"], font_color=T["text"], font_family="Inter",
-        margin=dict(l=20,r=20,t=10,b=10), height=320,
+        margin=dict(l=20, r=20, t=10, b=10), height=320,
         legend=dict(bgcolor="rgba(0,0,0,0)", font_color=T["muted"], font_size=11),
     )
     st.plotly_chart(fig6, use_container_width=True)
@@ -629,7 +623,7 @@ fig7 = px.scatter(
     filtered.sample(min(600, len(filtered)), random_state=1),
     x="energy", y="valence", color="genre",
     size="popularity", size_max=14, opacity=0.72,
-    hover_data=["track_name","artist_name","popularity"],
+    hover_data=["track_name", "artist_name", "popularity"],
     color_discrete_sequence=px.colors.qualitative.Bold,
 )
 fig7.update_layout(**chart_layout(380))
@@ -652,12 +646,12 @@ st.markdown("<hr class='custom-divider'>", unsafe_allow_html=True)
 st.markdown("<p class='section-header'>🔀 Parallel Coordinates — Multi-Feature Explorer</p>", unsafe_allow_html=True)
 st.markdown("<p class='section-sub'>Drag the axes to filter — see how features relate across all tracks</p>", unsafe_allow_html=True)
 
-par_cols = [c for c in ["popularity","danceability","energy","valence","acousticness","duration_min"]
+par_cols = [c for c in ["popularity", "danceability", "energy", "valence", "acousticness", "duration_min"]
             if c in filtered.columns]
 
-# ✅ FIX: `labelcolor` is not a valid Parcoords parameter — removed.
-# Use labelfont/rangefont/tickfont dicts instead.
-# Colorscale uses only valid 6-digit hex or rgba() strings — no 8-digit hex.
+# ✅ FIXED: `labelcolor` is NOT a valid Parcoords parameter and has been removed.
+# Font colours for labels/ticks/ranges are controlled via labelfont/tickfont/rangefont dicts.
+# Colorscale uses only valid 6-digit hex or rgba() — never 8-digit hex.
 parcoords_colorscale = [
     [0.0, T["surface2"]],
     [0.5, T["accent"]],
@@ -695,9 +689,9 @@ st.markdown("<hr class='custom-divider'>", unsafe_allow_html=True)
 st.markdown("<p class='section-header'>🗃️ PostgreSQL Output Preview</p>", unsafe_allow_html=True)
 st.markdown("<p class='section-sub'>Cleaned and structured data as loaded into the database</p>", unsafe_allow_html=True)
 
-show_cols = [c for c in ["track_name","artist_name","album","genre",
-                          "release_year","duration_min","popularity",
-                          "danceability","energy","valence","explicit"]
+show_cols = [c for c in ["track_name", "artist_name", "album", "genre",
+                          "release_year", "duration_min", "popularity",
+                          "danceability", "energy", "valence", "explicit"]
              if c in filtered.columns]
 st.dataframe(
     filtered[show_cols].head(100).reset_index(drop=True),

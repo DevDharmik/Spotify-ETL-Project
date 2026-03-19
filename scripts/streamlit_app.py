@@ -509,7 +509,6 @@ pivot["e_bin"] = e_bins
 pivot["d_bin"] = d_bins
 surface_data = pivot.groupby(["e_bin","d_bin"])["popularity"].mean().unstack(fill_value=0)
 
-# FIX: use hex_to_rgba — Plotly rejects 8-digit hex in colorscales
 surf_colorscale = [
     [0.0, T["surface2"]],
     [0.4, hex_to_rgba(T["accent"], 0.6)],
@@ -656,7 +655,9 @@ st.markdown("<p class='section-sub'>Drag the axes to filter — see how features
 par_cols = [c for c in ["popularity","danceability","energy","valence","acousticness","duration_min"]
             if c in filtered.columns]
 
-# FIX: all stops are plain 6-digit hex — no 8-digit hex, no labelcolor, no labelangle
+# ✅ FIX: `labelcolor` is not a valid Parcoords parameter — removed.
+# Use labelfont/rangefont/tickfont dicts instead.
+# Colorscale uses only valid 6-digit hex or rgba() strings — no 8-digit hex.
 parcoords_colorscale = [
     [0.0, T["surface2"]],
     [0.5, T["accent"]],
@@ -668,14 +669,23 @@ fig8 = go.Figure(data=go.Parcoords(
         color=filtered["popularity"],
         colorscale=parcoords_colorscale,
         showscale=True,
-        cmin=0, cmax=100,
+        cmin=0,
+        cmax=100,
     ),
-    dimensions=[dict(label=c.replace("_"," ").title(),
-                     values=filtered[c]) for c in par_cols],
+    dimensions=[
+        dict(label=c.replace("_", " ").title(), values=filtered[c])
+        for c in par_cols
+    ],
+    labelfont=dict(color=T["text"], size=12, family="Inter"),
+    rangefont=dict(color=T["muted"], size=10, family="Inter"),
+    tickfont=dict(color=T["muted"],  size=10, family="Inter"),
 ))
 fig8.update_layout(
-    paper_bgcolor=T["bg"], font_color=T["text"], font_family="Inter",
-    margin=dict(l=60, r=40, t=40, b=20), height=380,
+    paper_bgcolor=T["bg"],
+    font_color=T["text"],
+    font_family="Inter",
+    margin=dict(l=60, r=40, t=40, b=20),
+    height=380,
 )
 st.plotly_chart(fig8, use_container_width=True)
 

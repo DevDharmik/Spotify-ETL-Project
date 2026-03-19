@@ -232,9 +232,19 @@ with st.sidebar:
     genres = sorted(df["genre"].dropna().unique())
     selected_genres = st.multiselect("Genre", options=genres, default=genres)
 
-    yr_min = int(df["release_year"].min())
-    yr_max = int(df["release_year"].max())
-    year_range = st.slider("Release Year", yr_min, yr_max, (yr_min, yr_max))
+    yr_min = int(df["release_year"].dropna().min())
+    yr_max = int(df["release_year"].dropna().max())
+
+    if yr_min == yr_max:
+    yr_max = yr_min + 1
+
+    year_range = st.slider(
+    "Release Year",
+    min_value=yr_min,
+    max_value=yr_max,
+    value=(yr_min, yr_max),
+    step=1,
+    )
 
     pop_range = st.slider("Popularity", 0, 100, (0, 100))
 

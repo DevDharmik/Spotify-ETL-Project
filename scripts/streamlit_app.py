@@ -236,7 +236,7 @@ with st.sidebar:
     yr_max = int(df["release_year"].dropna().max())
 
     if yr_min == yr_max:
-    yr_max = yr_min + 1
+       yr_max = yr_min + 1
 
     year_range = st.slider(
     "Release Year",

@@ -94,15 +94,13 @@ THEMES = {
 
 # ── Colour helper ─────────────────────────────────────────────────────────────
 # Plotly colorscales ONLY accept: named colours, 6-digit hex, or rgb()/rgba().
-# They do NOT accept 8-digit hex (e.g. "#1DB95499"). Use this helper everywhere
-# a semi-transparent accent colour is needed inside a Plotly colorscale.
+# They do NOT accept 8-digit hex (e.g. "#1DB95499"). Use this everywhere a
+# semi-transparent accent colour is needed inside a Plotly colorscale.
 
 def hex_to_rgba(hex_color: str, alpha: float = 1.0) -> str:
-    """Convert a 6-digit hex colour + alpha float → 'rgba(r,g,b,a)' string."""
     h = hex_color.lstrip("#")
     r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
     return f"rgba({r},{g},{b},{alpha})"
-
 
 # ── Sidebar Theme Picker ───────────────────────────────────────────────────────
 
@@ -435,7 +433,7 @@ p1,a1,p2,a2,p3,a3,p4 = st.columns([2,0.3,2,0.3,2,0.3,2])
 for col, icon, label, desc in [
     (p1,"📥","EXTRACT",   "Raw CSV → pandas DataFrame"),
     (p2,"🔧","TRANSFORM", "Clean · Deduplicate · Type-cast"),
-    (p3,"🗄️", "LOAD",      "PostgreSQL via SQLAlchemy"),
+    (p3,"🗄️","LOAD",      "PostgreSQL via SQLAlchemy"),
     (p4,"📊","VISUALISE", "Live Streamlit dashboard"),
 ]:
     with col:
@@ -448,8 +446,9 @@ for col, icon, label, desc in [
         """, unsafe_allow_html=True)
 for arr in [a1,a2,a3]:
     with arr:
-        st.markdown(f"<div style='text-align:center;font-size:1.5rem;color:{T['accent']};padding-top:18px;'>➜</div>",
-                    unsafe_allow_html=True)
+        st.markdown(
+            f"<div style='text-align:center;font-size:1.5rem;color:{T['accent']};padding-top:18px;'>➜</div>",
+            unsafe_allow_html=True)
 
 st.markdown("<hr class='custom-divider'>", unsafe_allow_html=True)
 
@@ -498,25 +497,23 @@ with col2:
                        hovertemplate="<b>%{y}</b><br>Tracks: %{x}<extra></extra>")
     st.plotly_chart(fig2, use_container_width=True)
 
-# ── 3D Surface — Popularity × Danceability × Energy ──────────────────────────
-# FIX: Plotly colorscales reject 8-digit hex (e.g. "#1DB95499").
-#      All stop colours must be 6-digit hex, named colours, or rgba() strings.
+# ── 3D Surface ────────────────────────────────────────────────────────────────
 
 st.markdown("<p class='section-header'>🏔️ 3D Surface — Popularity Landscape</p>", unsafe_allow_html=True)
 st.markdown("<p class='section-sub'>Average popularity across energy and danceability buckets</p>", unsafe_allow_html=True)
 
-e_bins  = pd.cut(filtered["energy"],       bins=15, labels=False)
-d_bins  = pd.cut(filtered["danceability"], bins=15, labels=False)
-pivot   = filtered.copy()
+e_bins = pd.cut(filtered["energy"],       bins=15, labels=False)
+d_bins = pd.cut(filtered["danceability"], bins=15, labels=False)
+pivot  = filtered.copy()
 pivot["e_bin"] = e_bins
 pivot["d_bin"] = d_bins
 surface_data = pivot.groupby(["e_bin","d_bin"])["popularity"].mean().unstack(fill_value=0)
 
-# Build colorscale with proper rgba() strings (not 8-digit hex)
+# FIX: use hex_to_rgba — Plotly rejects 8-digit hex in colorscales
 surf_colorscale = [
-    [0.0, T["surface2"]],                          # 6-digit hex — valid ✓
-    [0.4, hex_to_rgba(T["accent"], 0.6)],           # rgba()      — valid ✓
-    [1.0, T["accent2"]],                            # 6-digit hex — valid ✓
+    [0.0, T["surface2"]],
+    [0.4, hex_to_rgba(T["accent"], 0.6)],
+    [1.0, T["accent2"]],
 ]
 
 fig_surf = go.Figure(data=[go.Surface(
@@ -565,7 +562,8 @@ with col4:
     yearly = filtered.groupby("release_year").size().reset_index(name="count")
     fig4 = px.area(yearly, x="release_year", y="count",
                    color_discrete_sequence=[T["accent"]], line_shape="spline")
-    fig4.update_traces(fill="tozeroy", fillcolor=hex_to_rgba(T["accent"], 0.13),
+    fig4.update_traces(fill="tozeroy",
+                       fillcolor=hex_to_rgba(T["accent"], 0.13),
                        line_color=T["accent"], line_width=2.5)
     fig4.update_layout(**chart_layout(300))
     st.plotly_chart(fig4, use_container_width=True)
@@ -593,14 +591,13 @@ with col6:
     st.markdown("<p class='section-sub'>Danceability · Energy · Valence · Acousticness</p>", unsafe_allow_html=True)
     feat_cols = [c for c in ["danceability","energy","valence","acousticness","speechiness"]
                  if c in filtered.columns]
-    radar = filtered.groupby("genre")[feat_cols].mean().reset_index()
-    cats  = [c.capitalize() for c in feat_cols]
+    radar  = filtered.groupby("genre")[feat_cols].mean().reset_index()
+    cats   = [c.capitalize() for c in feat_cols]
     palette = px.colors.qualitative.Bold
-    fig6  = go.Figure()
+    fig6   = go.Figure()
     for i, row in radar.iterrows():
         v = [row[c] for c in feat_cols]
         raw_color = palette[i % len(palette)]
-        # Build a safe fill colour — convert rgb(...) to rgba(..., 0.08)
         if raw_color.startswith("rgb(") and not raw_color.startswith("rgba("):
             fill_color = raw_color.replace("rgb(", "rgba(").replace(")", ",0.08)")
         else:
@@ -608,8 +605,7 @@ with col6:
         fig6.add_trace(go.Scatterpolar(
             r=v+[v[0]], theta=cats+[cats[0]],
             fill="toself", name=row["genre"],
-            line_color=raw_color,
-            fillcolor=fill_color,
+            line_color=raw_color, fillcolor=fill_color,
             line_width=1.8, opacity=0.9,
         ))
     fig6.update_layout(
@@ -652,7 +648,6 @@ fig7.add_hline(y=0.5, line_dash="dot", line_color=hex_to_rgba(T["accent"], 0.27)
 st.plotly_chart(fig7, use_container_width=True)
 
 # ── Parallel Coordinates ──────────────────────────────────────────────────────
-# FIX: same 8-digit hex issue — use rgba() for the mid-stop colour.
 
 st.markdown("<hr class='custom-divider'>", unsafe_allow_html=True)
 st.markdown("<p class='section-header'>🔀 Parallel Coordinates — Multi-Feature Explorer</p>", unsafe_allow_html=True)
@@ -661,11 +656,11 @@ st.markdown("<p class='section-sub'>Drag the axes to filter — see how features
 par_cols = [c for c in ["popularity","danceability","energy","valence","acousticness","duration_min"]
             if c in filtered.columns]
 
-# Build colorscale with proper colour formats
+# FIX: all stops are plain 6-digit hex — no 8-digit hex, no labelcolor, no labelangle
 parcoords_colorscale = [
-    [0.0, T["surface2"]],                   # 6-digit hex — valid ✓
-    [0.5, T["accent"]],                     # 6-digit hex — valid ✓
-    [1.0, T["accent2"]],                    # 6-digit hex — valid ✓
+    [0.0, T["surface2"]],
+    [0.5, T["accent"]],
+    [1.0, T["accent2"]],
 ]
 
 fig8 = go.Figure(data=go.Parcoords(
@@ -677,7 +672,6 @@ fig8 = go.Figure(data=go.Parcoords(
     ),
     dimensions=[dict(label=c.replace("_"," ").title(),
                      values=filtered[c]) for c in par_cols],
-    labelcolor=T["text"],
 ))
 fig8.update_layout(
     paper_bgcolor=T["bg"], font_color=T["text"], font_family="Inter",
